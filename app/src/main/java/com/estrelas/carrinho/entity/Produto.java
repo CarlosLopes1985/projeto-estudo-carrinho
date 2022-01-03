@@ -1,6 +1,7 @@
 package com.estrelas.carrinho.entity;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,7 +9,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,7 +25,13 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
     private String nome;
-    private Double preco;
+    @JsonProperty(value = "preco")
+    private Double precoRevenda;
+    private Integer quantidade;
+    private Double margemLucro;
+    private Double valorImpostos;
+    private Double valorFrete;
+    private Double valorCompra;
 
     @ManyToMany
     @JoinTable( name = "PRODUTO_CATEGORIA",
@@ -30,9 +39,96 @@ public class Produto implements Serializable {
     inverseJoinColumns = @JoinColumn(name="categoria_id") )
     private List<Categoria> categorias = new ArrayList<>();
 
-    public Produto(Integer id, String nome, Double preco) {
+    @JsonIgnore
+    @OneToMany(mappedBy="id.produto")
+    private Set<ItemPedido> itens = new HashSet<>();
+
+    public Produto(Integer id, String nome, Double precoRevenda, Integer quantidade) {
         this.id = id;
         this.nome = nome;
-        this.preco = preco;
+        this.precoRevenda = precoRevenda;
+        this.quantidade = quantidade;
+    }
+
+    public Produto(Integer id, String nome, Double precoRevenda) {
+        this.id = id;
+        this.nome = nome;
+        this.precoRevenda = precoRevenda;
+    }
+
+
+    @JsonIgnore
+    public List<Pedido> getPedidos() {
+        List<Pedido> lista = new ArrayList<>();
+        for (ItemPedido x : itens) {
+            lista.add(x.getPedido());
+        }
+        return lista;
+    }
+
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public Double getPrecoRevenda() {
+        return precoRevenda;
+    }
+
+    public void setPrecoRevenda(Double preco) {
+        this.precoRevenda = precoRevenda;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Produto other = (Produto) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }

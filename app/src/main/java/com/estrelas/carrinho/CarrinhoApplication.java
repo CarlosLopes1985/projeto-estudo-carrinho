@@ -1,14 +1,19 @@
 package com.estrelas.carrinho;
 
 import com.estrelas.carrinho.entity.Categoria;
+import com.estrelas.carrinho.entity.ItemPedido;
+import com.estrelas.carrinho.entity.Pedido;
 import com.estrelas.carrinho.entity.Produto;
 import com.estrelas.carrinho.repository.CategoriaRepository;
+import com.estrelas.carrinho.repository.ItemPedidoRepository;
+import com.estrelas.carrinho.repository.PedidoRepository;
 import com.estrelas.carrinho.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -17,15 +22,14 @@ public class CarrinhoApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(CarrinhoApplication.class, args);
 	}
-//
-//	@Autowired
-//	private ClienteRepository clienteRepository;
-//
+	@Autowired
+	private PedidoRepository pedidoRepository;
+
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
-//
-//	@Autowired
-//	private CompraRepository compraRepository;
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
@@ -51,22 +55,27 @@ public class CarrinhoApplication implements CommandLineRunner {
 
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 
+		Pedido ped1 = new Pedido(null, LocalDateTime.now());
+		Pedido ped2 = new Pedido(null, LocalDateTime.now());
+
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2));
 
 //		Cliente cliente = new Cliente(null,"11792993706");
 //		Cliente cliente2 = new Cliente(null,"11792993707");
 //
 //		clienteRepository.saveAll(Arrays.asList(cliente,cliente2));
-//
-//		Produto prod = new Produto(null, "Geladeira",10,1500.);
-//		Produto prod2 = new Produto(null, "Fogão",10,1000.);
-//
-//		produtoRepository.saveAll(Arrays.asList(prod, prod2));
-//
-//		Compra compra = new Compra(null,10,10000., LocalDateTime.now(),cliente, prod);
-//		Compra compra1 = new Compra(null,5, 5000., LocalDateTime.now(),cliente2, prod2);
-//
-//		compraRepository.saveAll(Arrays.asList(compra,compra1));
-//
 
 	}
 }
