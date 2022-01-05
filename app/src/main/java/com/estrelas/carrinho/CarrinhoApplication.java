@@ -62,15 +62,18 @@ public class CarrinhoApplication implements CommandLineRunner {
 
 		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
 		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
-		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 10, 800.00);
+		ItemPedido ip4 = new ItemPedido(ped2, p1, 30.00, 8, 800.00);
+		ItemPedido ip5 = new ItemPedido(ped2, p3, 00.00, 15, 800.00);
+		ItemPedido ip6 = new ItemPedido(ped2, p1, 50.00, 18, 800.00);
 
 		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
-		ped2.getItens().addAll(Arrays.asList(ip3));
+		ped2.getItens().addAll(Arrays.asList(ip3,ip4,ip5,ip6));
 
 		p1.getItens().addAll(Arrays.asList(ip1));
-		p2.getItens().addAll(Arrays.asList(ip3));
+		p2.getItens().addAll(Arrays.asList(ip3,ip4,ip5,ip6));
 
-		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2));
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3,ip4,ip5,ip6));
 
 //		Cliente cliente = new Cliente(null,"11792993706");
 //		Cliente cliente2 = new Cliente(null,"11792993707");

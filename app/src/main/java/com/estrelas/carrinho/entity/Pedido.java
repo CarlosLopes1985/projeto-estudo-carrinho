@@ -26,8 +26,16 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy="id.pedido")
     private Set<ItemPedido> itens = new HashSet<>();
 
+    private Double valorTotalPedido;
+
     public Pedido(Integer id, LocalDateTime dataPedido) {
         this.id = id;
         this.dataPedido = dataPedido;
     }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+
 }

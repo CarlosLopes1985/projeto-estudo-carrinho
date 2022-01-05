@@ -33,6 +33,7 @@ public class Produto implements Serializable {
     private Double valorFrete;
     private Double valorCompra;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable( name = "PRODUTO_CATEGORIA",
     joinColumns = @JoinColumn(name ="produto_id"),

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Service
@@ -49,10 +50,21 @@ public class PedidoService {
 
     public Pedido find(Integer id) {
         Optional<Pedido> obj = repo.findById(id);
+        obj.get().setValorTotalPedido(calcularValorTotalPedido(obj.get().getItens()));
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
     }
 
+    public Double calcularValorTotalPedido(Set<ItemPedido> pedido){
+
+        Double valorTotal = 0.;
+
+        for (ItemPedido ip : pedido) {
+            valorTotal = valorTotal + ip.getSubTotal();
+        }
+
+        return valorTotal;
+    }
 //    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 ////        UserSS user = UserService.authenticated();
 ////        if (user == null) {
