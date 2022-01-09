@@ -1,13 +1,7 @@
 package com.estrelas.carrinho;
 
-import com.estrelas.carrinho.entity.Categoria;
-import com.estrelas.carrinho.entity.ItemPedido;
-import com.estrelas.carrinho.entity.Pedido;
-import com.estrelas.carrinho.entity.Produto;
-import com.estrelas.carrinho.repository.CategoriaRepository;
-import com.estrelas.carrinho.repository.ItemPedidoRepository;
-import com.estrelas.carrinho.repository.PedidoRepository;
-import com.estrelas.carrinho.repository.ProdutoRepository;
+import com.estrelas.carrinho.entity.*;
+import com.estrelas.carrinho.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -34,8 +28,19 @@ public class CarrinhoApplication implements CommandLineRunner {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
+	@Autowired
+	private ClienteRepository clienteRepository;
+
 	@Override
 	public void run(String... args) throws Exception {
+
+		Cliente cliente = new Cliente(null,"11792993706");
+		Cliente cliente1 = new Cliente(null,"11792993707");
+		Cliente cliente2 = new Cliente(null,"11792993708");
+		Cliente cliente3 = new Cliente(null,"11792993709");
+		Cliente cliente4 = new Cliente(null,"11792993700");
+
+		clienteRepository.saveAll(Arrays.asList(cliente,cliente1,cliente2,cliente3,cliente4));
 
 		Categoria categoria = new Categoria(null,"Escritório");
 		Categoria categoria2 = new Categoria(null,"Informatica");
@@ -57,6 +62,9 @@ public class CarrinhoApplication implements CommandLineRunner {
 
 		Pedido ped1 = new Pedido(null, LocalDateTime.now());
 		Pedido ped2 = new Pedido(null, LocalDateTime.now());
+
+		ped1.setCliente(cliente);
+		ped2.setCliente(cliente);
 
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 

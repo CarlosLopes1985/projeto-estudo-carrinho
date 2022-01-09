@@ -1,24 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-<!--
-    <include resource="org/springframework/boot/logging/logback/log.xml" />
-    <springProfile name="dev,staging">
-        <logger name="app/com.estrelas.carrinho.resources" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE" />
-        </logger>
-        <logger name="app/com.estrelas.carrinho.service" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE" />
-        </logger>>
-    </springProfile>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-    <include resource="org/springframework/boot/logging/logback/log.xml"/>
-    <logger name="app/com.estrelas.carrinho.resources" level="WARN" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-    </logger>
-    <logger name="app/com.estrelas.carrinho.service" level="WARN" additivity="false">
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE"/>
-    </logger>
-    -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
 </configuration>

@@ -17,7 +17,7 @@ import java.util.Set;
 public class PedidoService {
 
     @Autowired
-    private PedidoRepository repo;
+    private PedidoRepository pedidoRepository;
 
     @Autowired
     private ProdutoService produtoService;
@@ -35,7 +35,7 @@ public class PedidoService {
 //            PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
 //            boletoService.preencherPagamentoComBoleto(pagto, obj.getInstante());
 //        }
-        obj = repo.save(obj);
+        obj = pedidoRepository.save(obj);
         //pagamentoRepository.save(obj.getPagamento());
         for (ItemPedido ip : obj.getItens()) {
             ip.setDesconto(0.0);
@@ -49,7 +49,7 @@ public class PedidoService {
     }
 
     public Pedido find(Integer id) {
-        Optional<Pedido> obj = repo.findById(id);
+        Optional<Pedido> obj = pedidoRepository.findById(id);
         obj.get().setValorTotalPedido(calcularValorTotalPedido(obj.get().getItens()));
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
@@ -60,9 +60,8 @@ public class PedidoService {
         Double valorTotal = 0.;
 
         for (ItemPedido ip : pedido) {
-            valorTotal = valorTotal + ip.getSubTotal();
+            valorTotal += ip.getSubTotal();
         }
-
         return valorTotal;
     }
 //    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {

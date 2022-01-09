@@ -1,5 +1,6 @@
 package com.estrelas.carrinho.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +27,12 @@ public class Pedido implements Serializable {
     @OneToMany(mappedBy="id.pedido")
     private Set<ItemPedido> itens = new HashSet<>();
 
+    @Transient
     private Double valorTotalPedido;
+
+    @ManyToOne
+    @JoinColumn(name="cliente_id")
+    private Cliente cliente;
 
     public Pedido(Integer id, LocalDateTime dataPedido) {
         this.id = id;
