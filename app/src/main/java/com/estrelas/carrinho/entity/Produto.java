@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Produto implements Serializable {
     private Double valorImpostos;
     private Double valorFrete;
     private Double valorCompra;
+    private LocalDate dataValidade;
 
     @JsonIgnore
     @ManyToMany

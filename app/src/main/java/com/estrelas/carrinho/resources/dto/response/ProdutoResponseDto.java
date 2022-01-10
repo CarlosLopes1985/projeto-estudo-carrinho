@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutoDtoResponse {
+public class ProdutoResponseDto {
 
     private Integer id;
     private String nome;

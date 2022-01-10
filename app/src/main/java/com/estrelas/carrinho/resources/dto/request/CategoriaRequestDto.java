@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Getter
 @Setter
@@ -15,7 +14,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 public class CategoriaRequestDto {
 
-    @Min(value = 5)
-    @Max(value = 50)
+    @NotBlank(message="Preenchimento de nome é obrigatório")
+    @Length(min=3, max=120, message="O tamanho deve estar entre 3 e 50 caracteres")
     private String nome;
 }
