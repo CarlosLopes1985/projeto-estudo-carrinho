@@ -1,6 +1,7 @@
 package com.estrelas.carrinho.resources;
 
 import com.estrelas.carrinho.entity.Pedido;
+import com.estrelas.carrinho.resources.dto.request.PedidoRequestDto;
 import com.estrelas.carrinho.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,12 @@ public class PedidoResource {
     }
 
     @RequestMapping(method=RequestMethod.POST)
-    public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
-        obj = service.insert(obj);
+    public ResponseEntity<Void> insert(@Valid @RequestBody PedidoRequestDto obj) {
+        System.out.println(obj);
+        Pedido ped =  service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(obj.getId()).toUri();
-        return ResponseEntity.created(uri).build();
+                .path("/{id}").buildAndExpand(ped.getId()).toUri();
+        return null;
     }
 
 //    @RequestMapping(method=RequestMethod.GET)

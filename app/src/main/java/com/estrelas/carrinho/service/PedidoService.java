@@ -1,14 +1,18 @@
 package com.estrelas.carrinho.service;
 
+import com.estrelas.carrinho.converter.PedidoConverter;
 import com.estrelas.carrinho.entity.ItemPedido;
 import com.estrelas.carrinho.entity.Pedido;
 import com.estrelas.carrinho.exception.ObjectNotFoundException;
 import com.estrelas.carrinho.repository.ItemPedidoRepository;
 import com.estrelas.carrinho.repository.PedidoRepository;
+import com.estrelas.carrinho.resources.dto.request.PedidoRequestDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -25,27 +29,20 @@ public class PedidoService {
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
 
-    public Pedido insert(Pedido obj) {
-        obj.setId(null);
-        obj.setDataPedido(LocalDateTime.now());
-   //     obj.setCliente(clienteService.find(obj.getCliente().getId()));
- //       obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
-  //      obj.getPagamento().setPedido(obj);
-//        if (obj.getPagamento() instanceof PagamentoComBoleto) {
-//            PagamentoComBoleto pagto = (PagamentoComBoleto) obj.getPagamento();
-//            boletoService.preencherPagamentoComBoleto(pagto, obj.getInstante());
-//        }
-        obj = pedidoRepository.save(obj);
-        //pagamentoRepository.save(obj.getPagamento());
-        for (ItemPedido ip : obj.getItens()) {
-            ip.setDesconto(0.0);
-            ip.setProduto(produtoService.find(ip.getProduto().getId()));
-            ip.setPreco(ip.getProduto().getPrecoRevenda());
-            ip.setPedido(obj);
-        }
-        itemPedidoRepository.saveAll(obj.getItens());
-        //emailService.sendOrderConfirmationEmail(obj);
-        return obj;
+    @Autowired
+    private PedidoConverter pedidoConverter;
+
+    public Pedido insert(PedidoRequestDto obj) {
+
+        Pedido ped = pedidoConverter.converterPedidoRequestDtoToPedido(obj);
+        ped  = pedidoRepository.save(ped);
+
+        List<ItemPedido> item = pedidoConverter.converterPedidoRequestDtoToItemPedido(obj, ped);
+        ped.getItens().addAll(item);
+
+        itemPedidoRepository.saveAll(item);
+
+        return ped;
     }
 
     public Pedido find(Integer id) {
