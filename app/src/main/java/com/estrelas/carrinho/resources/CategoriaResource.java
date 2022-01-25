@@ -24,9 +24,7 @@ public class CategoriaResource {
 
     @RequestMapping(value="/{id}", method=RequestMethod.GET)
     public ResponseEntity<CategoriaProdutosResponseDto> find(@PathVariable Integer id) {
-
-        CategoriaProdutosResponseDto obj = categoriaService.findById(id);
-        return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(categoriaService.findById(id));
     }
 
     @RequestMapping(method=RequestMethod.POST)

@@ -20,17 +20,16 @@ public class PedidoResource {
 
     @RequestMapping(value="/{id}", method= RequestMethod.GET)
     public ResponseEntity<Pedido> find(@PathVariable Integer id) {
-        Pedido obj = service.find(id);
-        return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(service.find(id));
     }
 
     @RequestMapping(method=RequestMethod.POST)
     public ResponseEntity<Void> insert(@Valid @RequestBody PedidoRequestDto obj) {
-        System.out.println(obj);
+
         Pedido ped =  service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(ped.getId()).toUri();
-        return null;
+        return ResponseEntity.created(uri).build();
     }
 
 //    @RequestMapping(method=RequestMethod.GET)

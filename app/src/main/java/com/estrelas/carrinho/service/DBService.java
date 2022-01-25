@@ -41,9 +41,9 @@ public class DBService {
         Categoria categoria = new Categoria(null,"Escritório");
         Categoria categoria2 = new Categoria(null,"Informatica");
 
-        Produto p1 = new Produto(null, "Computador",2000.);
-        Produto p2 = new Produto(null, "Impressora",800.);
-        Produto p3 = new Produto(null, "Mouse",50.);
+        Produto p1 = new Produto(null, "Computador",2000., 100);
+        Produto p2 = new Produto(null, "Impressora",800., 500);
+        Produto p3 = new Produto(null, "Mouse",50., 1000);
 
         categoria.getProdutos().addAll(Arrays.asList(p1,p2,p3));
         categoria2.getProdutos().addAll(Arrays.asList(p2));

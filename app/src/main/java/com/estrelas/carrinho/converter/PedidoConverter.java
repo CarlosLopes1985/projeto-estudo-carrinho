@@ -5,6 +5,7 @@ import com.estrelas.carrinho.entity.ItemPedido;
 import com.estrelas.carrinho.entity.Pedido;
 import com.estrelas.carrinho.entity.Produto;
 import com.estrelas.carrinho.entity.enums.PedidosStatus;
+import com.estrelas.carrinho.exception.DataIntegrityException;
 import com.estrelas.carrinho.exception.ObjectNotFoundException;
 import com.estrelas.carrinho.repository.ClienteRepository;
 import com.estrelas.carrinho.repository.ProdutoRepository;
@@ -55,8 +56,29 @@ public class PedidoConverter {
             ip1.setStatus(PedidosStatus.EMANALISE.getCod());
 
             itens.add(ip1);
+
+            updateQuantidadeEstoque(prod.getId(), calcularQuantidade(prod.getQuantidade(), obj.getItemPedido().get(i).getProduto().getQuantidade()));
+
         }
         return itens;
+    }
+
+    public Integer calcularQuantidade(Integer qtdeEstoque, Integer quantidadePedido){
+
+        if( qtdeEstoque == null || quantidadePedido == null){
+            throw new DataIntegrityException(" Quantidade não pode ser nula");
+        }else if(qtdeEstoque < quantidadePedido){
+            throw new DataIntegrityException(" Produto não esta disponivel para esta quantidade ");
+        }
+        return qtdeEstoque - quantidadePedido;
+    }
+
+    public void updateQuantidadeEstoque(Integer idProduto, Integer quantidade){
+        Produto prd = new Produto();
+        prd.setId(idProduto);
+        prd.setQuantidade(quantidade);
+
+        produtoRepository.save(prd);
     }
 
     public Double valorTotalItemPedido(Produto prod, Integer qtde){
